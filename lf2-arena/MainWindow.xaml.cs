@@ -24,5 +24,10 @@ namespace lf2_arena
         {
             InitializeComponent();
         }
+
+        private void ButtonHost_OnClick(object sender, RoutedEventArgs e)
+        {
+            Transitioner.SelectedIndex = 1;
+        }
     }
 }

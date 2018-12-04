@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:lf2_arena"
         mc:Ignorable="d"
-        Title="MainWindow" Height="504.749" Width="479.149"
+        Title="MainWindow" Height="650" Width="400"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:converters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -53,93 +53,205 @@
             </DockPanel>
         </materialDesign:DrawerHost.LeftDrawerContent>
 
+        <Grid>
+            <DockPanel
+                Grid.Row="0">
+                <materialDesign:ColorZone
+                    DockPanel.Dock="Top" 
+                    Mode="PrimaryMid"
+                    Padding="20">
+                    <DockPanel>
+                        <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" IsChecked="False"
+                                      x:Name="MenuToggleButton"/>
+                        <materialDesign:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False">
+                            <StackPanel>
+                                <Button Content="Can't Touch This" IsEnabled="False" />
+                                <Separator/>
+                                <Button Content="Goodbye" />
+                            </StackPanel>
+                        </materialDesign:PopupBox>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22">LF2 Arena</TextBlock>
+                    </DockPanel>
+                </materialDesign:ColorZone>
+
+                <materialDesign:ColorZone
+                    DockPanel.Dock="Bottom" 
+                    Mode="Accent"
+                    Padding="10"
+                    MinHeight="40">
+
+                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="13">Waiting For LF2 to connect...</TextBlock>
+
+                </materialDesign:ColorZone>
+
+                <materialDesign:Transitioner Name="Transitioner" SelectedIndex="0" AutoApplyTransitionOrigins="True">
+
+                    <materialDesign:ColorZone Mode="Light" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <StackPanel CanVerticallyScroll="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                            <materialDesign:Card Margin="10 10 10 0">
+                                <StackPanel
+                                    Margin="8 24 8 8">
+                                    <TextBlock
+                                        FontWeight="Bold">
+                                        Host
+                                    </TextBlock>
+                                    <TextBlock
+                                        TextWrapping="Wrap"
+                                        VerticalAlignment="Center">
+                                        Select the Local IP address you want to host with. a
+                                    </TextBlock>
+                                    <ComboBox materialDesign:HintAssist.Hint="Local IP" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                              Margin="0 10 0 10">
+                                        <ComboBoxItem>192.168.1.1</ComboBoxItem>
+                                        <ComboBoxItem>iOS</ComboBoxItem>
+                                        <ComboBoxItem>Linux</ComboBoxItem>
+                                        <ComboBoxItem>Windows</ComboBoxItem>
+                                    </ComboBox>
+                                    <Button
+                                        Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Bottom"
+                                        Margin="0 0 0 0"
+                                        Click="ButtonHost_OnClick">
+                                        _HOST
+                                    </Button>
+                                </StackPanel>
+                            </materialDesign:Card>
+
+                            <materialDesign:Card Margin="10 10 10 10">
+                                <StackPanel
+                                    Margin="8 24 8 8">
+                                    <TextBlock
+                                        FontWeight="Bold">
+                                        Join
+                                    </TextBlock>
+                                    <TextBlock
+                                        TextWrapping="Wrap"
+                                        VerticalAlignment="Center">
+                                        Enter the Remote IP address you want to join.
+                                    </TextBlock>
+
+                                    <TextBox
+                                        Margin="0 10 0 10"
+                                        materialDesign:HintAssist.Hint="Remote IP">
+                                        <TextBox.Text>
+                                            <Binding
+                                                Path="Remote IP"
+                                                UpdateSourceTrigger="PropertyChanged">
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
 
 
-        <StackPanel>
-            <materialDesign:ColorZone
-                Mode="PrimaryMid"
-                Padding="20">
-                <DockPanel>
-                    <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" IsChecked="False"
-                                  x:Name="MenuToggleButton"/>
-                    <materialDesign:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False">
-                        <StackPanel>
-                            <Button Content="Can't Touch This" IsEnabled="False" />
-                            <Separator/>
-                            <Button Content="Goodbye" />
+                                    <Button
+                                        Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Bottom"
+                                        Margin="0 0 0 0">
+                                        _JOIN
+                                    </Button>
+                                </StackPanel>
+                            </materialDesign:Card>
                         </StackPanel>
-                    </materialDesign:PopupBox>
-                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22">LF2 Arena</TextBlock>
-                </DockPanel>
-            </materialDesign:ColorZone>
+                    </materialDesign:ColorZone>
 
-            <materialDesign:Card Margin="10 10 10 0">
-                <StackPanel
-                    Margin="8 24 8 8">
-                    <TextBlock
-                        FontWeight="Bold">
-                        Host
-                    </TextBlock>
-                    <TextBlock
-                        TextWrapping="Wrap"
-                        VerticalAlignment="Center">
-                        Select the Local IP address you want to host with.
-                    </TextBlock>
-                    <ComboBox materialDesign:HintAssist.Hint="Local IP" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                              Margin="0 10 0 10">
-                        <ComboBoxItem>192.168.1.1</ComboBoxItem>
-                        <ComboBoxItem>iOS</ComboBoxItem>
-                        <ComboBoxItem>Linux</ComboBoxItem>
-                        <ComboBoxItem>Windows</ComboBoxItem>
-                    </ComboBox>
-                    <Button
-                        Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Bottom"
-                        Margin="0 0 0 0">
-                        _HOST
-                    </Button>
-                </StackPanel>
-            </materialDesign:Card>
+                    <materialDesign:ColorZone Mode="PrimaryLight" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <StackPanel CanVerticallyScroll="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                            <materialDesign:Card Margin="10 10 10 0">
+                                <StackPanel
+                                    Margin="8 24 8 8">
+                                    <TextBlock
+                                        FontWeight="Bold">
+                                        Host
+                                    </TextBlock>
+                                    <TextBlock
+                                        TextWrapping="Wrap"
+                                        VerticalAlignment="Center">
+                                        Select the Local IP address you want to host with. b
+                                    </TextBlock>
+                                    <ComboBox materialDesign:HintAssist.Hint="Local IP" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                              Margin="0 10 0 10">
+                                        <ComboBoxItem>192.168.1.1</ComboBoxItem>
+                                        <ComboBoxItem>iOS</ComboBoxItem>
+                                        <ComboBoxItem>Linux</ComboBoxItem>
+                                        <ComboBoxItem>Windows</ComboBoxItem>
+                                    </ComboBox>
+                                    <Button
+                                        Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Bottom"
+                                        Margin="0 0 0 0">
+                                        _HOST
+                                    </Button>
+                                </StackPanel>
+                            </materialDesign:Card>
 
-            <materialDesign:Card Margin="10 10 10 0">
-                <StackPanel
-                    Margin="8 24 8 8">
-                    <TextBlock
-                        FontWeight="Bold">
-                        Join
-                    </TextBlock>
-                    <TextBlock
-                        TextWrapping="Wrap"
-                        VerticalAlignment="Center">
-                        Enter the Remote IP address you want to join.
-                    </TextBlock>
+                            <materialDesign:Card Margin="10 10 10 10">
+                                <StackPanel
+                                    Margin="8 24 8 8">
+                                    <TextBlock
+                                        FontWeight="Bold">
+                                        Join
+                                    </TextBlock>
+                                    <TextBlock
+                                        TextWrapping="Wrap"
+                                        VerticalAlignment="Center">
+                                        Enter the Remote IP address you want to join.
+                                    </TextBlock>
 
-                    <TextBox
-                        x:Name="NameTextBox"
-                        Margin="0 10 0 10"
-                        materialDesign:HintAssist.Hint="Remote IP">
-                        <TextBox.Text>
-                            <Binding
-                                Path="Remote IP"
-                                UpdateSourceTrigger="PropertyChanged">
-                            </Binding>
-                        </TextBox.Text>
-                    </TextBox>
-
-
-                    <Button
-                        Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Bottom"
-                        Margin="0 0 0 0">
-                        _JOIN
-                    </Button>
-                </StackPanel>
-            </materialDesign:Card>
+                                    <TextBox
+                                        x:Name="NameTextBox"
+                                        Margin="0 10 0 10"
+                                        materialDesign:HintAssist.Hint="Remote IP">
+                                        <TextBox.Text>
+                                            <Binding
+                                                Path="Remote IP"
+                                                UpdateSourceTrigger="PropertyChanged">
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
 
 
-        </StackPanel>
+                                    <Button
+                                        Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Bottom"
+                                        Margin="0 0 0 0"
+                                        Command="{x:Static materialDesign:Transitioner.MovePreviousCommand}">
+                                        _JOIN
+                                    </Button>
+                                </StackPanel>
+                            </materialDesign:Card>
+                        </StackPanel>
+                    </materialDesign:ColorZone>
+
+                </materialDesign:Transitioner>
+
+
+
+
+            </DockPanel>
+            <ToggleButton
+                HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                Margin="10" Width="50" Height="50"
+                Style="{StaticResource MaterialDesignActionToggleButton}"
+                ToolTip="MaterialDesignActionLightToggleButton">
+                <ToggleButton.Content>
+                    <materialDesign:PackIcon
+                        Kind="Play"
+                        Width="24"
+                        Height="24" />
+                </ToggleButton.Content>
+                <materialDesign:ToggleButtonAssist.OnContent>
+                    <materialDesign:PackIcon
+                        Kind="Stop"
+                        Width="24"
+                        Height="24" />
+                </materialDesign:ToggleButtonAssist.OnContent>
+            </ToggleButton>
+        </Grid>
+        
+        
 
     </materialDesign:DrawerHost>
 
