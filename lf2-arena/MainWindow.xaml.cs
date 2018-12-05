@@ -15,19 +15,36 @@ using System.Windows.Shapes;
 
 namespace lf2_arena
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+  /// <summary>
+  /// Interaction logic for MainWindow.xaml
+  /// </summary>
+  public partial class MainWindow : Window
+  {
+    public MainWindow()
     {
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
-
-        private void ButtonHost_OnClick(object sender, RoutedEventArgs e)
-        {
-            Transitioner.SelectedIndex = 1;
-        }
+      InitializeComponent();
+      RoomListModel roomListModel = new RoomListModel();
+      DataContext = roomListModel;
     }
+
+    private void ButtonHost_OnClick(object sender, RoutedEventArgs e)
+    {
+      Transitioner.SelectedIndex = 1;
+    }
+    
+    private void ButtonJoin_OnClick(object sender, RoutedEventArgs e)
+    {
+      Transitioner.SelectedIndex = 2;
+    }
+
+    private void ButtonExitRoom_OnClick(object sender, RoutedEventArgs e)
+    {
+      Transitioner.SelectedIndex = 0;
+    }
+
+    private void ButtonCancelGame_OnClick(object sender, RoutedEventArgs e)
+    {
+      Transitioner.SelectedIndex = 0;
+    }
+  }
 }
