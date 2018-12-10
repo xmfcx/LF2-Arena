@@ -375,10 +375,12 @@
 
       <!-- LF2 Button -->
       <ToggleButton
+        x:Name="ButtonPlay"
         HorizontalAlignment="Right" VerticalAlignment="Bottom"
         Margin="10" Width="50" Height="50"
         Style="{StaticResource MaterialDesignActionToggleButton}"
-        ToolTip="MaterialDesignActionLightToggleButton">
+        ToolTip="MaterialDesignActionLightToggleButton"
+        Click="ButtonPlay_OnClick">
         <ToggleButton.Content>
           <materialDesign:PackIcon
             Kind="Play"

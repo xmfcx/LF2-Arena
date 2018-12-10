@@ -31,7 +31,7 @@ namespace lf2_arena
     {
       Transitioner.SelectedIndex = 1;
     }
-    
+
     private void ButtonJoin_OnClick(object sender, RoutedEventArgs e)
     {
       Transitioner.SelectedIndex = 2;
@@ -45,6 +45,19 @@ namespace lf2_arena
     private void ButtonCancelGame_OnClick(object sender, RoutedEventArgs e)
     {
       Transitioner.SelectedIndex = 0;
+    }
+
+    private void ButtonPlay_OnClick(object sender, RoutedEventArgs e)
+    {
+      if (ButtonPlay.IsChecked == null)
+        return;
+
+      if ((bool) ButtonPlay.IsChecked)
+      {
+        Helper.LaunchLf2(3, @"E:\Games\LF2");
+        return;
+      }
+      Helper.KillLf2();
     }
   }
 }
