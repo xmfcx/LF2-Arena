@@ -1,4 +1,4 @@
-﻿<Window x:Class="lf2_arena.MainWindow"
+<Window x:Class="lf2_arena.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -165,12 +165,19 @@
 
         <!-- Bottom Dock -->
         <materialDesign:ColorZone
+          x:Name="BottomColorZone"
           DockPanel.Dock="Bottom"
           Mode="Accent"
           Padding="10"
           MinHeight="40">
 
-          <TextBlock HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="13">Waiting For LF2 to connect...</TextBlock>
+          <TextBlock 
+            x:Name="BottomText"
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Bottom" 
+            FontSize="13">
+            Waiting For LF2 to connect...
+          </TextBlock>
 
         </materialDesign:ColorZone>
 

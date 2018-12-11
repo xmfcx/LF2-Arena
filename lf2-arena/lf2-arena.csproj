@@ -63,6 +63,7 @@
     </ApplicationDefinition>
     <Compile Include="Helper.cs" />
     <Compile Include="HookHandler.cs" />
+    <Compile Include="Lf2Handler.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="RoomListModel.cs" />
     <Compile Include="RoomListSelectableViewModel.cs" />
