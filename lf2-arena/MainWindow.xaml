@@ -1,4 +1,4 @@
-<Window x:Class="lf2_arena.MainWindow"
+﻿<Window x:Class="lf2_arena.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -54,6 +54,7 @@
                       IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
 
         <StackPanel>
+          <!-- Name/Path -->
           <Grid Margin="0" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="20" />
@@ -70,6 +71,8 @@
 
             <TextBox Grid.Row="0" Grid.Column="1"
                      materialDesign:HintAssist.Hint="Player Name"
+                     x:Name="TextBoxNamePlayer"
+                     LostFocus="TextBoxNamePlayer_OnLostFocus"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      HorizontalAlignment="Stretch"
                      Margin="0 0 10 10" />
@@ -79,6 +82,9 @@
                                      Foreground="{Binding ElementName=NameTextBox, Path=BorderBrush}" />
 
             <TextBox Grid.Row="1" Grid.Column="1"
+                     x:Name="TextBoxPathLf2"
+                     IsReadOnly="True"
+                     PreviewMouseDown="TextBoxPathLf2_OnMouseDown"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="LF2 Executable Path"
                      HorizontalAlignment="Stretch"
@@ -87,9 +93,11 @@
 
           </Grid>
 
+          <!-- Keys Expander -->
           <materialDesign:Card
             Background="{DynamicResource MaterialDesignBackground}">
             <Expander
+              IsExpanded="True"
               HorizontalAlignment="Stretch"
               Header="Keys">
               <StackPanel
@@ -98,32 +106,53 @@
 
 
                 <TextBox materialDesign:HintAssist.Hint="Up"
+                         x:Name="TextBoxUp"
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                          HorizontalAlignment="Stretch"
+                         KeyUp="TextBoxUp_OnKeyUp"
+                         AcceptsTab="True"
                          Margin="0 0 10 10" />
                 <TextBox materialDesign:HintAssist.Hint="Down"
+                         x:Name="TextBoxDown"
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                          HorizontalAlignment="Stretch"
+                         KeyUp="TextBoxDown_OnKeyUp"
+                         AcceptsTab="True"
                          Margin="0 0 10 10" />
                 <TextBox materialDesign:HintAssist.Hint="Left"
+                         x:Name="TextBoxLeft"
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                          HorizontalAlignment="Stretch"
+                         KeyUp="TextBoxLeft_OnKeyUp"
+                         AcceptsTab="True"
                          Margin="0 0 10 10" />
                 <TextBox materialDesign:HintAssist.Hint="Right"
+                         x:Name="TextBoxRight"
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                          HorizontalAlignment="Stretch"
+                         KeyUp="TextBoxRight_OnKeyUp"
+                         AcceptsTab="True"
                          Margin="0 0 10 10" />
                 <TextBox materialDesign:HintAssist.Hint="Attack"
+                         x:Name="TextBoxAttack"
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                          HorizontalAlignment="Stretch"
+                         KeyUp="TextBoxAttack_OnKeyUp"
+                         AcceptsTab="True"
                          Margin="0 0 10 10" />
                 <TextBox materialDesign:HintAssist.Hint="Jump"
+                         x:Name="TextBoxJump"
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                          HorizontalAlignment="Stretch"
+                         KeyUp="TextBoxJump_OnKeyUp"
+                         AcceptsTab="True"
                          Margin="0 0 10 10" />
                 <TextBox materialDesign:HintAssist.Hint="Defend"
+                         x:Name="TextBoxDefend"
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                          HorizontalAlignment="Stretch"
+                         KeyUp="TextBoxDefend_OnKeyUp"
+                         AcceptsTab="True"
                          Margin="0 0 10 10" />
               </StackPanel>
             </Expander>

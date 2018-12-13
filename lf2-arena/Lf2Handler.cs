@@ -20,6 +20,9 @@ namespace lf2_arena
 
     public Lf2Handler()
     {
+      KeyboardHookHandler.SetIt();
+
+
     }
 
     public void ListenForLf2()

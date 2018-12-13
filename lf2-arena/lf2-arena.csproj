@@ -55,6 +55,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="YamlDotNet, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YamlDotNet.5.3.0\lib\net45\YamlDotNet.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -63,10 +66,12 @@
     </ApplicationDefinition>
     <Compile Include="Helper.cs" />
     <Compile Include="HookHandler.cs" />
+    <Compile Include="KeyboardHookHandler.cs" />
     <Compile Include="Lf2Handler.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="RoomListModel.cs" />
     <Compile Include="RoomListSelectableViewModel.cs" />
+    <Compile Include="SettingsHandler.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MaterialDesignThemes.Wpf;
+using Microsoft.Win32;
 
 namespace lf2_arena
 {
@@ -21,17 +23,29 @@ namespace lf2_arena
   /// </summary>
   public partial class MainWindow : Window
   {
-    private Lf2Handler _lf2Handler;
+    private SettingsHandler _settingsHandler;
 
     public MainWindow()
     {
       InitializeComponent();
+      _settingsHandler = new SettingsHandler();
+      var config = _settingsHandler.Config;
+      TextBoxNamePlayer.Text = config.NamePlayer;
+      TextBoxPathLf2.Text = config.PathLf2;
+      TextBoxUp.Text = config.KeyUp.ToString();
+      TextBoxDown.Text = config.KeyDown.ToString();
+      TextBoxLeft.Text = config.KeyLeft.ToString();
+      TextBoxRight.Text = config.KeyRight.ToString();
+      TextBoxAttack.Text = config.KeyAttack.ToString();
+      TextBoxJump.Text = config.KeyJump.ToString();
+      TextBoxDefend.Text = config.KeyDefend.ToString();
+
       RoomListModel roomListModel = new RoomListModel();
       DataContext = roomListModel;
 
-      _lf2Handler = new Lf2Handler();
-      _lf2Handler.OnRoomStateChanged += Lf2HandlerOnOnRoomStateChanged;
-      _lf2Handler.ListenForLf2();
+      var lf2Handler = new Lf2Handler();
+      lf2Handler.OnRoomStateChanged += Lf2HandlerOnOnRoomStateChanged;
+      lf2Handler.ListenForLf2();
     }
 
     private void Lf2HandlerOnOnRoomStateChanged(bool roomState)
@@ -84,6 +98,81 @@ namespace lf2_arena
         return;
       }
       Helper.KillLf2();
+    }
+
+    private void TextBoxUp_OnKeyUp(object sender, KeyEventArgs e)
+    {
+      TextBox textbox = (TextBox) sender;
+      textbox.Text = e.Key.ToString();
+      _settingsHandler.Config.KeyUp = e.Key;
+      _settingsHandler.Save();
+    }
+
+    private void TextBoxDown_OnKeyUp(object sender, KeyEventArgs e)
+    {
+      TextBox textbox = (TextBox) sender;
+      textbox.Text = e.Key.ToString();
+      _settingsHandler.Config.KeyDown = e.Key;
+      _settingsHandler.Save();
+    }
+
+    private void TextBoxLeft_OnKeyUp(object sender, KeyEventArgs e)
+    {
+      TextBox textbox = (TextBox) sender;
+      textbox.Text = e.Key.ToString();
+      _settingsHandler.Config.KeyLeft = e.Key;
+      _settingsHandler.Save();
+    }
+
+    private void TextBoxRight_OnKeyUp(object sender, KeyEventArgs e)
+    {
+      TextBox textbox = (TextBox) sender;
+      textbox.Text = e.Key.ToString();
+      _settingsHandler.Config.KeyRight = e.Key;
+      _settingsHandler.Save();
+    }
+
+    private void TextBoxDefend_OnKeyUp(object sender, KeyEventArgs e)
+    {
+      TextBox textbox = (TextBox) sender;
+      textbox.Text = e.Key.ToString();
+      _settingsHandler.Config.KeyDefend = e.Key;
+      _settingsHandler.Save();
+    }
+
+    private void TextBoxJump_OnKeyUp(object sender, KeyEventArgs e)
+    {
+      TextBox textbox = (TextBox) sender;
+      textbox.Text = e.Key.ToString();
+      _settingsHandler.Config.KeyJump = e.Key;
+      _settingsHandler.Save();
+    }
+
+    private void TextBoxAttack_OnKeyUp(object sender, KeyEventArgs e)
+    {
+      TextBox textbox = (TextBox) sender;
+      textbox.Text = e.Key.ToString();
+      _settingsHandler.Config.KeyAttack = e.Key;
+      _settingsHandler.Save();
+    }
+
+    private void TextBoxNamePlayer_OnLostFocus(object sender, RoutedEventArgs e)
+    {
+      TextBox textbox = (TextBox) sender;
+      _settingsHandler.Config.NamePlayer = textbox.Text;
+      _settingsHandler.Save();
+    }
+
+    private void TextBoxPathLf2_OnMouseDown(object sender, MouseButtonEventArgs e)
+    {
+      TextBox textbox = (TextBox) sender;
+
+      OpenFileDialog openFileDialog = new OpenFileDialog();
+      openFileDialog.Filter = "lf2.exe file (*.exe)|*.exe|All files (*.*)|*.*"; ;
+      if (openFileDialog.ShowDialog() == true)
+        textbox.Text = openFileDialog.FileName;
+      _settingsHandler.Config.PathLf2 = textbox.Text;
+      _settingsHandler.Save();
     }
   }
 }
