@@ -17,7 +17,15 @@ namespace lf2_arena
       var lf2Process = new Process();
       if (Process.GetProcessesByName("lf2").Length == 0)
       {
-        lf2Process.StartInfo.FileName = startupDir + @"/lf2.exe";
+        lf2Process.StartInfo.FileName = startupDir;
+        for (int i = startupDir.Length - 1; i >= 0; i--)
+        {
+          if (startupDir[i] == '\\')
+          {
+            break;
+          }
+          startupDir = startupDir.Remove(startupDir.Length - 1);
+        }
         lf2Process.StartInfo.WorkingDirectory = startupDir;
         lf2Process.StartInfo.CreateNoWindow = true;
         lf2Process.StartInfo.UseShellExecute = false;
@@ -113,6 +121,5 @@ namespace lf2_arena
         }
       }
     }
-
   }
 }

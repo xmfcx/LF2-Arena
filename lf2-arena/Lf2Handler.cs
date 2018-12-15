@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -70,11 +71,63 @@ namespace lf2_arena
 
     public void Lf2Talker(TcpClient client)
     {
-      NetworkStream streamToLobby;
-      TcpClient clientLobby;
+      var streamLf2 = client.GetStream();
 
+      //var msg = 
+      streamLf2.Write(Encoding.ASCII.GetBytes("u can connect\0"), 0, 14);
+      Thread.Sleep(500);
+
+      var message = new byte[77];
+      streamLf2.Read(message, 0, message.Length);
+      PrintEnc(message);
+      //Print(message);
+
+      for (int i = 0; i < 8; i++)
+      {
+        message[i] = (byte) '0';
+      }
+      streamLf2.Write(message, 0, message.Length);
+
+      Random random = new Random();
+      byte[] seed = new byte[3001];
+      random.NextBytes(seed);
+      streamLf2.Write(seed, 0, 3001);
+
+      message = new byte[22];
+      while (true)
+      {
+        streamLf2.Read(message, 0, message.Length);
+        string keyString;
+        lock (_lockKeyString)
+        {
+          keyString = _keyString;
+        }
+        int keySet = 1;
+        for (int i = 0; i < keyString.Length; i++)
+        {
+          keySet += Convert.ToInt32(Math.Pow(2, i + 1));
+        }
+        message[0] = Convert.ToByte(keySet);
+        streamLf2.Write(message, 0, 22);
+      }
 
       client.Close();
+    }
+
+
+    public static string ByteArrayToString(byte[] ba)
+    {
+      return BitConverter.ToString(ba).Replace("-", " ");
+    }
+
+    public static void Print(byte[] ba)
+    {
+      Debug.WriteLine(ByteArrayToString(ba));
+    }
+
+    public static void PrintEnc(byte[] ba)
+    {
+      Debug.WriteLine(Encoding.ASCII.GetString(ba, 0, ba.Length));
     }
   }
 }

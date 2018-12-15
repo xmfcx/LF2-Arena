@@ -99,7 +99,7 @@ namespace lf2_arena
 
       if ((bool) ButtonPlay.IsChecked)
       {
-        Helper.LaunchLf2(3, @"E:\Games\LF2");
+        Helper.LaunchLf2(3, _settingsHandler.Config.PathLf2);
         return;
       }
       Helper.KillLf2();
