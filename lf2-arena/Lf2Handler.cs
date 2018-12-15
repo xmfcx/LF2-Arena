@@ -6,23 +6,33 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Data;
 
 namespace lf2_arena
 {
   class Lf2Handler
   {
-    private NetworkStream _streamToLobby;
-    private TcpClient _clientLobby;
+    private readonly object _lockKeyString = new object();
+
+    private string _keyString = "0000000";
+
+    public void SetKeyString(string keys)
+    {
+      lock (_lockKeyString)
+      {
+        _keyString = keys;
+        Console.WriteLine(_keyString);
+      }
+    }
 
     // Beautiful event system :>
     public delegate void DgEventRaiser(bool roomState);
+
     public event DgEventRaiser OnRoomStateChanged;
 
     public Lf2Handler()
     {
       KeyboardHookHandler.SetIt();
-
-
     }
 
     public void ListenForLf2()
@@ -60,7 +70,10 @@ namespace lf2_arena
 
     public void Lf2Talker(TcpClient client)
     {
-      Thread.Sleep(5000);
+      NetworkStream streamToLobby;
+      TcpClient clientLobby;
+
+
       client.Close();
     }
   }

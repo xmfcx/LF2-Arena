@@ -27,8 +27,11 @@ namespace lf2_arena
 
     public MainWindow()
     {
+      Helper.KillLf2();
       InitializeComponent();
       _settingsHandler = new SettingsHandler();
+      _settingsHandler.OnKeyChangeEventOccured += KeyboardHookHandler.SetKeys;
+      _settingsHandler.ForceKeyChangeEvent();
       var config = _settingsHandler.Config;
       TextBoxNamePlayer.Text = config.NamePlayer;
       TextBoxPathLf2.Text = config.PathLf2;
@@ -43,12 +46,14 @@ namespace lf2_arena
       RoomListModel roomListModel = new RoomListModel();
       DataContext = roomListModel;
 
+
       var lf2Handler = new Lf2Handler();
-      lf2Handler.OnRoomStateChanged += Lf2HandlerOnOnRoomStateChanged;
+      lf2Handler.OnRoomStateChanged += Lf2HandlerOnRoomStateChanged;
+      KeyboardHookHandler.OnKeyEventOccured += lf2Handler.SetKeyString;
       lf2Handler.ListenForLf2();
     }
 
-    private void Lf2HandlerOnOnRoomStateChanged(bool roomState)
+    private void Lf2HandlerOnRoomStateChanged(bool roomState)
     {
       if (roomState)
       {

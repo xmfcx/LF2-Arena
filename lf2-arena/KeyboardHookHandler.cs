@@ -11,21 +11,26 @@ namespace lf2_arena
 {
   class KeyboardHookHandler
   {
+    private static List<Key> _arenaKeys;
 
+    private static readonly StringBuilder KeySet = new StringBuilder("0000000");
+
+    public static void SetKeys(List<Key> arenaKeys)
+    {
+      _arenaKeys = arenaKeys;
+    }
 
     // Beautiful event system :>
     public delegate void DgEventRaiser(string keySet);
+
     public static event DgEventRaiser OnKeyEventOccured;
 
-
-    private static string keySet = "0000000";
-
-    private static IntPtr keyboardHook;
-    private static LowLevelKeyboardProc suchProc = HookCallback;
+    private static IntPtr _keyboardHook;
+    private static readonly LowLevelKeyboardProc suchProc = HookCallback;
 
     public static void SetIt()
     {
-      keyboardHook = SetHook(suchProc);
+      _keyboardHook = SetHook(suchProc);
     }
 
 
@@ -66,6 +71,7 @@ namespace lf2_arena
       }
     }
 
+
     private static IntPtr HookCallback(int nCode, IntPtr keyState, IntPtr lParam)
     {
       if (nCode >= 0 && keyState == (IntPtr) WM_KEYDOWN)
@@ -75,15 +81,16 @@ namespace lf2_arena
         if (GetWindowText(hwnd2, windowtitle, windowtitle.Capacity) > 0)
           if (windowtitle.ToString() == "Little Fighter 2")
           {
-            OnKeyEventOccured?.Invoke(keySet);
-            int vkCode = Marshal.ReadInt32(lParam);
-            for (int a = 0; a < 7; a++)
+            Key key = KeyInterop.KeyFromVirtualKey(Marshal.ReadInt32(lParam));
+
+            for (int i = 0; i < _arenaKeys.Count; i++)
             {
-              //if ((Key)vkCode == _lf2Handler.keyPlayer[a])
-              //{
-              //  _lf2Handler.keyLogic[a] = true;
-              //}
+              if (key == _arenaKeys[i])
+              {
+                KeySet[i] = '1';
+              }
             }
+            OnKeyEventOccured?.Invoke(KeySet.ToString());
           }
       }
 
@@ -94,19 +101,19 @@ namespace lf2_arena
         if (GetWindowText(hwnd2, windowtitle, windowtitle.Capacity) > 0)
           if (windowtitle.ToString() == "Little Fighter 2")
           {
-            OnKeyEventOccured?.Invoke(keySet);
-            int vkCode = Marshal.ReadInt32(lParam);
-            for (int a = 0; a < 7; a++)
+            Key key = KeyInterop.KeyFromVirtualKey(Marshal.ReadInt32(lParam));
+            for (int i = 0; i < _arenaKeys.Count; i++)
             {
-              //if ((Key)vkCode == _lf2Handler.keyPlayer[a])
-              //{
-              //  _lf2Handler.keyLogic[a] = false;
-              //}
+              if (key == _arenaKeys[i])
+              {
+                KeySet[i] = '0';
+              }
             }
+            OnKeyEventOccured?.Invoke(KeySet.ToString());
           }
       }
 
-      return CallNextHookEx(keyboardHook, nCode, keyState, lParam);
+      return CallNextHookEx(_keyboardHook, nCode, keyState, lParam);
     }
   }
 }

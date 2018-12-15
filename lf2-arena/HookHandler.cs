@@ -15,8 +15,8 @@ namespace lf2_arena
     public const int WH_KEYBOARD_LL = 13;
     public const int WM_KEYDOWN = 0x0100;
     public const int WM_KEYUP = 0x0101;
-    public static LowLevelKeyboardProc suchProc = HookCallback;
-    public static IntPtr keyboardHook = IntPtr.Zero;
+    public static LowLevelKeyboardProc SuchProc = HookCallback;
+    public static IntPtr KeyboardHook = IntPtr.Zero;
 
     public static IntPtr SetHook(LowLevelKeyboardProc proc)
     {
@@ -70,7 +70,7 @@ namespace lf2_arena
           }
       }
 
-      return CallNextHookEx(keyboardHook, nCode, keyState, lParam);
+      return CallNextHookEx(KeyboardHook, nCode, keyState, lParam);
     }
 
     [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
