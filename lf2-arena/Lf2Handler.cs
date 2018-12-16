@@ -13,6 +13,7 @@ namespace lf2_arena
 {
   class Lf2Handler
   {
+    public HostHandler HostHandler;
     private readonly object _lockKeyString = new object();
 
     private string _keyString = "0000000";
@@ -33,6 +34,7 @@ namespace lf2_arena
 
     public Lf2Handler()
     {
+      HostHandler = new HostHandler();
       KeyboardHookHandler.SetIt();
     }
 
@@ -72,8 +74,7 @@ namespace lf2_arena
     public void Lf2Talker(TcpClient client)
     {
       var streamLf2 = client.GetStream();
-
-      //var msg = 
+      
       streamLf2.Write(Encoding.ASCII.GetBytes("u can connect\0"), 0, 14);
       Thread.Sleep(500);
 
@@ -84,7 +85,7 @@ namespace lf2_arena
 
       for (int i = 0; i < 8; i++)
       {
-        message[i] = (byte) '0';
+        message[i] = (byte) '1';
       }
       streamLf2.Write(message, 0, message.Length);
 
@@ -105,8 +106,10 @@ namespace lf2_arena
         int keySet = 1;
         for (int i = 0; i < keyString.Length; i++)
         {
-          keySet += Convert.ToInt32(Math.Pow(2, i + 1));
+          if (keyString[i] == '1')
+            keySet += Convert.ToInt32(Math.Pow(2, i + 1));
         }
+        Debug.WriteLine("key: " + keySet);
         message[0] = Convert.ToByte(keySet);
         streamLf2.Write(message, 0, 22);
       }

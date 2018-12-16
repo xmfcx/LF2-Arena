@@ -12,29 +12,38 @@ namespace lf2_arena
 {
   class Helper
   {
-    public static void LaunchLf2(int slowerMultipler, string startupDir)
+    private static string NameLf2 = "lf2";
+
+    public static void LaunchLf2(int slowerMultipler, string pathFull)
     {
-      var lf2Process = new Process();
-      if (Process.GetProcessesByName("lf2").Length == 0)
+      string startupDir = pathFull;
+      NameLf2 = pathFull.Split('\\').Last();
+      NameLf2 = NameLf2.Split('.').First();
+      Debug.WriteLine(NameLf2);
+
+      for (int i = startupDir.Length - 1; i >= 0; i--)
       {
-        lf2Process.StartInfo.FileName = startupDir;
-        for (int i = startupDir.Length - 1; i >= 0; i--)
+        if (startupDir[i] == '\\')
         {
-          if (startupDir[i] == '\\')
-          {
-            break;
-          }
-          startupDir = startupDir.Remove(startupDir.Length - 1);
+          break;
         }
+        startupDir = startupDir.Remove(startupDir.Length - 1);
+      }
+
+
+      var lf2Process = new Process();
+      if (Process.GetProcessesByName(NameLf2).Length == 0)
+      {
+        lf2Process.StartInfo.FileName = pathFull;
         lf2Process.StartInfo.WorkingDirectory = startupDir;
         lf2Process.StartInfo.CreateNoWindow = true;
         lf2Process.StartInfo.UseShellExecute = false;
         lf2Process.Start();
       }
 
-      if (Process.GetProcessesByName("lf2").Length > 0)
+      if (Process.GetProcessesByName(NameLf2).Length > 0)
       {
-        var proc = Process.GetProcessesByName("lf2")[0];
+        var proc = Process.GetProcessesByName(NameLf2)[0];
         Thread.Sleep(1000);
         IntPtr handle = proc.MainWindowHandle;
         HookHandler.SetForegroundWindow(handle);
@@ -104,15 +113,15 @@ namespace lf2_arena
 
     public static void KillLf2()
     {
-      while (Process.GetProcessesByName("lf2").Length != 0)
+      while (Process.GetProcessesByName(NameLf2).Length != 0)
       {
-        if (Process.GetProcessesByName("lf2").Length > 0)
+        if (Process.GetProcessesByName(NameLf2).Length > 0)
         {
           try
           {
-            for (int a = 0; a < Process.GetProcessesByName("lf2").Length; a++)
+            for (int a = 0; a < Process.GetProcessesByName(NameLf2).Length; a++)
             {
-              Process.GetProcessesByName("lf2")[a].Kill();
+              Process.GetProcessesByName(NameLf2)[a].Kill();
             }
           }
           catch

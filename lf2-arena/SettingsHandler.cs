@@ -75,13 +75,13 @@ namespace lf2_arena
     {
       return new List<Key>
       {
-        config.KeyUp,
-        config.KeyDown,
-        config.KeyLeft,
-        config.KeyRight,
-        config.KeyAttack,
+        config.KeyDefend,
         config.KeyJump,
-        config.KeyDefend
+        config.KeyAttack,
+        config.KeyRight,
+        config.KeyLeft,
+        config.KeyDown,
+        config.KeyUp
       };
     }
   }
