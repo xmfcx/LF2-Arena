@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:lf2_arena"
         mc:Ignorable="d"
-        Title="MainWindow" Height="650" Width="400"
+        Title="MainWindow" Height="633" Width="637.5"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:converters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -39,12 +39,26 @@
       <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
       <converters:BooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" TrueValue="Collapsed"
                                                FalseValue="Visible" />
+      <Style x:Key="GridViewColumnHeaderStyle1" TargetType="{x:Type GridViewColumnHeader}">
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
+              <Border BorderThickness="0,0,0,1" BorderBrush="Black" Background="Transparent">
+                <TextBlock x:Name="ContentHeader" Text="{TemplateBinding Content}" Padding="5,5,5,0" Width="{TemplateBinding Width}" TextAlignment="Center" />
+              </Border>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="FontSize" Value="12" />
+      </Style>
     </ResourceDictionary>
   </Window.Resources>
 
 
   <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
-
     <!-- Drawer -->
     <materialDesign:DrawerHost.LeftDrawerContent>
       <DockPanel MinWidth="212">
@@ -53,112 +67,115 @@
                       HorizontalAlignment="Right" Margin="16"
                       IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
 
-        <StackPanel>
-          <!-- Name/Path -->
-          <Grid Margin="0" VerticalAlignment="Top">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="20" />
-              <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-              <RowDefinition Height="Auto" />
-              <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto">
+          <StackPanel>
+            <!-- Name/Path -->
+            <Grid Margin="0" VerticalAlignment="Top">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+              </Grid.RowDefinitions>
 
-            <materialDesign:PackIcon Grid.Row="0" Grid.Column="0"
-                                     Kind="Account"
-                                     Foreground="{Binding ElementName=NameTextBox, Path=BorderBrush}" />
+              <materialDesign:PackIcon Grid.Row="0" Grid.Column="0"
+                                       Kind="Account"
+                                       Foreground="{Binding ElementName=NameTextBox, Path=BorderBrush}" />
 
-            <TextBox Grid.Row="0" Grid.Column="1"
-                     materialDesign:HintAssist.Hint="Player Name"
-                     x:Name="TextBoxNamePlayer"
-                     LostFocus="TextBoxNamePlayer_OnLostFocus"
-                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     HorizontalAlignment="Stretch"
-                     Margin="0 0 10 10" />
+              <TextBox Grid.Row="0" Grid.Column="1"
+                       materialDesign:HintAssist.Hint="Player Name"
+                       x:Name="TextBoxNamePlayer"
+                       LostFocus="TextBoxNamePlayer_OnLostFocus"
+                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                       HorizontalAlignment="Stretch"
+                       Margin="0 0 10 10" />
 
-            <materialDesign:PackIcon Grid.Row="1" Grid.Column="0"
-                                     Kind="ArrowRightDropCircle"
-                                     Foreground="{Binding ElementName=NameTextBox, Path=BorderBrush}" />
+              <materialDesign:PackIcon Grid.Row="1" Grid.Column="0"
+                                       Kind="ArrowRightDropCircle"
+                                       Foreground="{Binding ElementName=NameTextBox, Path=BorderBrush}" />
 
-            <TextBox Grid.Row="1" Grid.Column="1"
-                     x:Name="TextBoxPathLf2"
-                     IsReadOnly="True"
-                     PreviewMouseDown="TextBoxPathLf2_OnMouseDown"
-                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     materialDesign:HintAssist.Hint="LF2 Executable Path"
-                     HorizontalAlignment="Stretch"
-                     Margin="0 0 10 10" />
-
-
-          </Grid>
-
-          <!-- Keys Expander -->
-          <materialDesign:Card
-            Background="{DynamicResource MaterialDesignBackground}">
-            <Expander
-              IsExpanded="True"
-              HorizontalAlignment="Stretch"
-              Header="Keys">
-              <StackPanel
-                Orientation="Vertical"
-                Margin="24,8,24,16">
+              <TextBox Grid.Row="1" Grid.Column="1"
+                       x:Name="TextBoxPathLf2"
+                       IsReadOnly="True"
+                       PreviewMouseDown="TextBoxPathLf2_OnMouseDown"
+                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                       materialDesign:HintAssist.Hint="LF2 Executable Path"
+                       HorizontalAlignment="Stretch"
+                       Margin="0 0 10 10" />
 
 
-                <TextBox materialDesign:HintAssist.Hint="Up"
-                         x:Name="TextBoxUp"
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                         HorizontalAlignment="Stretch"
-                         KeyUp="TextBoxUp_OnKeyUp"
-                         AcceptsTab="True"
-                         Margin="0 0 10 10" />
-                <TextBox materialDesign:HintAssist.Hint="Down"
-                         x:Name="TextBoxDown"
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                         HorizontalAlignment="Stretch"
-                         KeyUp="TextBoxDown_OnKeyUp"
-                         AcceptsTab="True"
-                         Margin="0 0 10 10" />
-                <TextBox materialDesign:HintAssist.Hint="Left"
-                         x:Name="TextBoxLeft"
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                         HorizontalAlignment="Stretch"
-                         KeyUp="TextBoxLeft_OnKeyUp"
-                         AcceptsTab="True"
-                         Margin="0 0 10 10" />
-                <TextBox materialDesign:HintAssist.Hint="Right"
-                         x:Name="TextBoxRight"
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                         HorizontalAlignment="Stretch"
-                         KeyUp="TextBoxRight_OnKeyUp"
-                         AcceptsTab="True"
-                         Margin="0 0 10 10" />
-                <TextBox materialDesign:HintAssist.Hint="Attack"
-                         x:Name="TextBoxAttack"
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                         HorizontalAlignment="Stretch"
-                         KeyUp="TextBoxAttack_OnKeyUp"
-                         AcceptsTab="True"
-                         Margin="0 0 10 10" />
-                <TextBox materialDesign:HintAssist.Hint="Jump"
-                         x:Name="TextBoxJump"
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                         HorizontalAlignment="Stretch"
-                         KeyUp="TextBoxJump_OnKeyUp"
-                         AcceptsTab="True"
-                         Margin="0 0 10 10" />
-                <TextBox materialDesign:HintAssist.Hint="Defend"
-                         x:Name="TextBoxDefend"
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                         HorizontalAlignment="Stretch"
-                         KeyUp="TextBoxDefend_OnKeyUp"
-                         AcceptsTab="True"
-                         Margin="0 0 10 10" />
-              </StackPanel>
-            </Expander>
-          </materialDesign:Card>
+            </Grid>
 
-        </StackPanel>
+            <!-- Keys Expander -->
+            <materialDesign:Card
+              Background="{DynamicResource MaterialDesignBackground}">
+              <Expander
+                IsExpanded="True"
+                HorizontalAlignment="Stretch"
+                Header="Keys">
+                <StackPanel
+                  Orientation="Vertical"
+                  Margin="24,8,24,16">
+
+
+                  <TextBox materialDesign:HintAssist.Hint="Up"
+                           x:Name="TextBoxUp"
+                           Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                           HorizontalAlignment="Stretch"
+                           KeyUp="TextBoxUp_OnKeyUp"
+                           AcceptsTab="True"
+                           Margin="0 0 10 10" />
+                  <TextBox materialDesign:HintAssist.Hint="Down"
+                           x:Name="TextBoxDown"
+                           Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                           HorizontalAlignment="Stretch"
+                           KeyUp="TextBoxDown_OnKeyUp"
+                           AcceptsTab="True"
+                           Margin="0 0 10 10" />
+                  <TextBox materialDesign:HintAssist.Hint="Left"
+                           x:Name="TextBoxLeft"
+                           Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                           HorizontalAlignment="Stretch"
+                           KeyUp="TextBoxLeft_OnKeyUp"
+                           AcceptsTab="True"
+                           Margin="0 0 10 10" />
+                  <TextBox materialDesign:HintAssist.Hint="Right"
+                           x:Name="TextBoxRight"
+                           Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                           HorizontalAlignment="Stretch"
+                           KeyUp="TextBoxRight_OnKeyUp"
+                           AcceptsTab="True"
+                           Margin="0 0 10 10" />
+                  <TextBox materialDesign:HintAssist.Hint="Attack"
+                           x:Name="TextBoxAttack"
+                           Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                           HorizontalAlignment="Stretch"
+                           KeyUp="TextBoxAttack_OnKeyUp"
+                           AcceptsTab="True"
+                           Margin="0 0 10 10" />
+                  <TextBox materialDesign:HintAssist.Hint="Jump"
+                           x:Name="TextBoxJump"
+                           Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                           HorizontalAlignment="Stretch"
+                           KeyUp="TextBoxJump_OnKeyUp"
+                           AcceptsTab="True"
+                           Margin="0 0 10 10" />
+                  <TextBox materialDesign:HintAssist.Hint="Defend"
+                           x:Name="TextBoxDefend"
+                           Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                           HorizontalAlignment="Stretch"
+                           KeyUp="TextBoxDefend_OnKeyUp"
+                           AcceptsTab="True"
+                           Margin="0 0 10 10" />
+                </StackPanel>
+              </Expander>
+            </materialDesign:Card>
+
+          </StackPanel>
+        </ScrollViewer>
       </DockPanel>
     </materialDesign:DrawerHost.LeftDrawerContent>
 
@@ -200,10 +217,10 @@
           Padding="10"
           MinHeight="40">
 
-          <TextBlock 
+          <TextBlock
             x:Name="BottomText"
-            HorizontalAlignment="Left" 
-            VerticalAlignment="Bottom" 
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
             FontSize="13">
             Waiting For LF2 to connect...
           </TextBlock>
@@ -215,88 +232,129 @@
 
           <!-- 0 Begin -->
           <materialDesign:TransitionerSlide>
+
+            <materialDesign:TransitionerSlide.OpeningEffects>
+              <materialDesign:TransitionEffect
+                Kind="SlideInFromRight"
+                Duration="0:0:0.2" />
+            </materialDesign:TransitionerSlide.OpeningEffects>
+
             <materialDesign:TransitionerSlide.BackwardWipe>
-              <materialDesign:CircleWipe />
+              <materialDesign:FadeWipe Duration="0:0:0.1" />
             </materialDesign:TransitionerSlide.BackwardWipe>
             <materialDesign:TransitionerSlide.ForwardWipe>
-              <materialDesign:CircleWipe />
+              <materialDesign:FadeWipe Duration="0:0:0.1" />
             </materialDesign:TransitionerSlide.ForwardWipe>
 
             <materialDesign:ColorZone Mode="Light" VerticalAlignment="Stretch"
                                       HorizontalAlignment="Stretch">
-              <StackPanel CanVerticallyScroll="True" VerticalAlignment="Stretch"
-                          HorizontalAlignment="Stretch">
-                <materialDesign:Card Margin="10 10 10 0">
-                  <StackPanel
-                    Margin="8 24 8 8">
-                    <TextBlock
-                      FontWeight="Bold">
-                      Host
-                    </TextBlock>
-                    <TextBlock
-                      TextWrapping="Wrap"
-                      VerticalAlignment="Center">
-                      Select the Local IP address you want to host with.
-                    </TextBlock>
-                    <ComboBox materialDesign:HintAssist.Hint="Local IP"
-                              Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                              Margin="0 10 0 10"
-                              SelectedIndex="0">
-                      <ComboBoxItem>192.168.1.1</ComboBoxItem>
-                      <ComboBoxItem>1.0.0.0</ComboBoxItem>
-                      <ComboBoxItem>0.1.0.0</ComboBoxItem>
-                      <ComboBoxItem>0.0.1.0</ComboBoxItem>
-                      <ComboBoxItem>0.0.0.1</ComboBoxItem>
-                    </ComboBox>
-                    <Button
-                      Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                      HorizontalAlignment="Right"
-                      VerticalAlignment="Bottom"
-                      Margin="0 0 0 0"
-                      Click="ButtonHost_OnClick">
-                      _HOST
-                    </Button>
-                  </StackPanel>
-                </materialDesign:Card>
 
-                <materialDesign:Card Margin="10 10 10 10">
-                  <StackPanel
-                    Margin="8 24 8 8">
-                    <TextBlock
-                      FontWeight="Bold">
-                      Join
-                    </TextBlock>
-                    <TextBlock
-                      TextWrapping="Wrap"
-                      VerticalAlignment="Center">
-                      Enter the Remote IP address you want to join.
-                    </TextBlock>
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="180" />
+                </Grid.ColumnDefinitions>
 
-                    <TextBox
-                      Margin="0 10 0 10"
-                      materialDesign:HintAssist.Hint="Remote IP">
-                      <TextBox.Text>
-                        <Binding
-                          Path="Remote IP"
-                          UpdateSourceTrigger="PropertyChanged" />
-                      </TextBox.Text>
-                    </TextBox>
+                <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                              VerticalScrollBarVisibility="Auto"
+                              Grid.Column="0">
+                  <Grid>
+                    <Grid.RowDefinitions>
+                      <RowDefinition Height="Auto" />
+                      <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
+                    <!-- Host Card -->
+                    <materialDesign:Card Margin="7 7 7 0"
+                                         Grid.Row="0">
+                      <materialDesign:ColorZone Mode="PrimaryLight" VerticalAlignment="Stretch"
+                                                HorizontalAlignment="Stretch">
+                        <Grid
+                          Margin="8 8 8 8">
+                          <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="Auto" />
+                          </Grid.ColumnDefinitions>
 
-                    <Button
-                      Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                      HorizontalAlignment="Right"
-                      VerticalAlignment="Bottom"
-                      Margin="0 0 0 0"
-                      Click="ButtonJoin_OnClick">
-                      _JOIN
-                    </Button>
-                  </StackPanel>
-                </materialDesign:Card>
+                          <TextBox materialDesign:HintAssist.Hint="Room Name"
+                                   Grid.Column="0"
+                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                   HorizontalAlignment="Stretch"
+                                   Margin="0 0 10 0"
+                                   Text="a room" />
+                          <Button
+                            Grid.Column="1"
+                            Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                            VerticalAlignment="Center"
+                            Width="70"
+                            Margin="0 0 0 0"
+                            Click="ButtonHost_OnClick">
+                            _HOST
+                          </Button>
+                        </Grid>
+                      </materialDesign:ColorZone>
+                    </materialDesign:Card>
+
+                    <!-- Join Room List Card -->
+                    <materialDesign:Card Margin="7 7 7 7"
+                                         Grid.Row="1"
+                                         VerticalAlignment="Stretch">
+                      <StackPanel
+                        Margin="8 8 8 8">
+                        <TextBlock
+                          FontWeight="Bold">
+                          Room List
+                        </TextBlock>
+
+                        <ListView />
 
 
+                      </StackPanel>
 
-              </StackPanel>
+
+                    </materialDesign:Card>
+
+
+                  </Grid>
+                </ScrollViewer>
+
+
+                <Grid Grid.Column="1">
+                  <materialDesign:Card Margin="0 7 7 7" VerticalAlignment="Stretch">
+                    <materialDesign:ColorZone Mode="Light"
+                                              VerticalAlignment="Stretch"
+                                              HorizontalAlignment="Stretch">
+
+                      <StackPanel
+                        Margin="8 8 8 8">
+                        <TextBlock
+                          FontWeight="Bold">
+                          Player List
+                        </TextBlock>
+
+                        <ListView
+                          ItemsSource="{Binding RoomItems}">
+
+                          <ListView.View>
+                            <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle1}">
+                              <GridViewColumn Width="100"
+                                              DisplayMemberBinding="{Binding PlayerName}"
+                                              Header="Name" />
+                              <GridViewColumn Width="50"
+                                              DisplayMemberBinding="{Binding PlayerPing}"
+                                              Header="Ping" />
+                            </GridView>
+                          </ListView.View>
+                        </ListView>
+
+
+                      </StackPanel>
+                    </materialDesign:ColorZone>
+                  </materialDesign:Card>
+                </Grid>
+
+              </Grid>
+
             </materialDesign:ColorZone>
 
           </materialDesign:TransitionerSlide>
@@ -304,10 +362,10 @@
           <!-- 1 Host Room -->
           <materialDesign:TransitionerSlide>
             <materialDesign:TransitionerSlide.BackwardWipe>
-              <materialDesign:CircleWipe />
+              <materialDesign:FadeWipe Duration="0:0:0.1" />
             </materialDesign:TransitionerSlide.BackwardWipe>
             <materialDesign:TransitionerSlide.ForwardWipe>
-              <materialDesign:CircleWipe />
+              <materialDesign:FadeWipe Duration="0:0:0.1" />
             </materialDesign:TransitionerSlide.ForwardWipe>
 
             <DockPanel>
@@ -335,6 +393,7 @@
               <ListView
                 ItemsSource="{Binding RoomItems}"
                 IsHitTestVisible="False">
+
                 <ListView.View>
                   <GridView>
                     <GridViewColumn Width="50"

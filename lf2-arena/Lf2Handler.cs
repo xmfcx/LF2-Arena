@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -85,7 +85,7 @@ namespace lf2_arena
       }
     }
 
-    public void Lf2Talker(TcpClient client)
+    private void Lf2Talker(TcpClient client)
     {
       var streamLf2 = client.GetStream();
 
