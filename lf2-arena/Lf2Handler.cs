@@ -17,13 +17,27 @@ namespace lf2_arena
     private readonly object _lockKeyString = new object();
 
     private string _keyString = "0000000";
+    int _keySetLast = 1;
+    int _keySetSentLast = 1;
+    Queue<Tuple<DateTime, int>> _inputQueue = new Queue<Tuple<DateTime, int>>();
 
     public void SetKeyString(string keys)
     {
+      int keySet = 1;
       lock (_lockKeyString)
       {
         _keyString = keys;
-        Console.WriteLine(_keyString);
+        for (int i = 0; i < _keyString.Length; i++)
+        {
+          if (_keyString[i] == '1')
+            keySet += Convert.ToInt32(Math.Pow(2, i + 1));
+        }
+        if (_keySetLast != keySet)
+        {
+          _inputQueue.Enqueue(new Tuple<DateTime, int>(DateTime.Now, keySet));
+          _keySetLast = keySet;
+        }
+        Debug.WriteLine("input: " + _keyString);
       }
     }
 
@@ -74,7 +88,7 @@ namespace lf2_arena
     public void Lf2Talker(TcpClient client)
     {
       var streamLf2 = client.GetStream();
-      
+
       streamLf2.Write(Encoding.ASCII.GetBytes("u can connect\0"), 0, 14);
       Thread.Sleep(500);
 
@@ -98,20 +112,32 @@ namespace lf2_arena
       while (true)
       {
         streamLf2.Read(message, 0, message.Length);
-        string keyString;
+        Debug.WriteLine("read");
+        int keySetSend = _keySetSentLast;
         lock (_lockKeyString)
         {
-          keyString = _keyString;
+          if (_inputQueue.Count > 0)
+          {
+            var tuple = _inputQueue.Dequeue();
+            var time = tuple.Item1;
+            keySetSend = tuple.Item2;
+            while (_inputQueue.Count > 0)
+            {
+              if ((_inputQueue.Peek().Item1 - time).TotalMilliseconds > 50)
+                break;
+
+              tuple = _inputQueue.Dequeue();
+              time = tuple.Item1;
+              keySetSend = tuple.Item2;
+            }
+          }
         }
-        int keySet = 1;
-        for (int i = 0; i < keyString.Length; i++)
-        {
-          if (keyString[i] == '1')
-            keySet += Convert.ToInt32(Math.Pow(2, i + 1));
-        }
-        Debug.WriteLine("key: " + keySet);
-        message[0] = Convert.ToByte(keySet);
+
+        Debug.WriteLine("sending: " + keySetSend);
+        message[0] = Convert.ToByte(keySetSend);
         streamLf2.Write(message, 0, 22);
+        _keySetSentLast = keySetSend;
+        Debug.WriteLine("sennt");
       }
 
       client.Close();
