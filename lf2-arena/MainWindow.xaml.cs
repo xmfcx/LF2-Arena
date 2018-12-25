@@ -42,6 +42,8 @@ namespace lf2_arena
       TextBoxAttack.Text = config.KeyAttack.ToString();
       TextBoxJump.Text = config.KeyJump.ToString();
       TextBoxDefend.Text = config.KeyDefend.ToString();
+      TextBoxWindowNameLf2.Text = config.WindowName;
+      KeyboardHookHandler.SetLf2WindowName(TextBoxWindowNameLf2.Text);
 
       RoomListModel roomListModel = new RoomListModel();
       DataContext = roomListModel;
@@ -51,10 +53,6 @@ namespace lf2_arena
       lf2Handler.OnRoomStateChanged += Lf2HandlerOnRoomStateChanged;
       KeyboardHookHandler.OnKeyEventOccured += lf2Handler.SetKeyString;
       lf2Handler.ListenForLf2();
-
-
-
-
     }
 
     private void Lf2HandlerOnRoomStateChanged(bool roomState)
@@ -177,11 +175,20 @@ namespace lf2_arena
       TextBox textbox = (TextBox) sender;
 
       OpenFileDialog openFileDialog = new OpenFileDialog();
-      openFileDialog.Filter = "lf2.exe file (*.exe)|*.exe|All files (*.*)|*.*"; ;
+      openFileDialog.Filter = "lf2.exe file (*.exe)|*.exe|All files (*.*)|*.*";
+      ;
       if (openFileDialog.ShowDialog() == true)
         textbox.Text = openFileDialog.FileName;
       _settingsHandler.Config.PathLf2 = textbox.Text;
       _settingsHandler.Save();
+    }
+
+    private void TextBoxWindowNameLf2_OnLostFocus(object sender, RoutedEventArgs e)
+    {
+      TextBox textbox = (TextBox) sender;
+      _settingsHandler.Config.WindowName = textbox.Text;
+      _settingsHandler.Save();
+      KeyboardHookHandler.SetLf2WindowName(textbox.Text);
     }
   }
 }

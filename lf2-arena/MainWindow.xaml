@@ -79,6 +79,7 @@
               <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
               </Grid.RowDefinitions>
 
               <materialDesign:PackIcon Grid.Row="0" Grid.Column="0"
@@ -105,6 +106,20 @@
                        materialDesign:HintAssist.Hint="LF2 Executable Path"
                        HorizontalAlignment="Stretch"
                        Margin="0 0 10 10" />
+
+
+              <materialDesign:PackIcon Grid.Row="2" Grid.Column="0"
+                                       Kind="AlphabetLBox"
+                                       Foreground="{Binding ElementName=NameTextBox, Path=BorderBrush}" />
+
+              <TextBox Grid.Row="2" Grid.Column="1"
+                       x:Name="TextBoxWindowNameLf2"
+                       LostFocus="TextBoxWindowNameLf2_OnLostFocus"
+                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                       materialDesign:HintAssist.Hint="LF2 Window Name"
+                       HorizontalAlignment="Stretch"
+                       Margin="0 0 10 10"
+                       Text="Little Fighter 2"/>
 
 
             </Grid>

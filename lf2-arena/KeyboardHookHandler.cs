@@ -12,12 +12,18 @@ namespace lf2_arena
   class KeyboardHookHandler
   {
     private static List<Key> _arenaKeys;
+    private static string _lf2WindowName;
 
     private static readonly StringBuilder KeySet = new StringBuilder("0000000");
 
     public static void SetKeys(List<Key> arenaKeys)
     {
       _arenaKeys = arenaKeys;
+    }
+
+    public static void SetLf2WindowName(string lf2WindowName)
+    {
+      _lf2WindowName = lf2WindowName;
     }
 
     // Beautiful event system :>
@@ -79,7 +85,7 @@ namespace lf2_arena
         IntPtr hwnd2 = GetForegroundWindow();
         StringBuilder windowtitle = new StringBuilder(256);
         if (GetWindowText(hwnd2, windowtitle, windowtitle.Capacity) > 0)
-          if (windowtitle.ToString() == "Little Fighter 2")
+          if (windowtitle.ToString() == _lf2WindowName)
           {
             Key key = KeyInterop.KeyFromVirtualKey(Marshal.ReadInt32(lParam));
 
@@ -99,7 +105,7 @@ namespace lf2_arena
         IntPtr hwnd2 = GetForegroundWindow();
         StringBuilder windowtitle = new StringBuilder(256);
         if (GetWindowText(hwnd2, windowtitle, windowtitle.Capacity) > 0)
-          if (windowtitle.ToString() == "Little Fighter 2")
+          if (windowtitle.ToString() == _lf2WindowName)
           {
             Key key = KeyInterop.KeyFromVirtualKey(Marshal.ReadInt32(lParam));
             for (int i = 0; i < _arenaKeys.Count; i++)

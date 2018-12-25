@@ -17,6 +17,7 @@ namespace lf2_arena
     {
       public string NamePlayer { get; set; }
       public string PathLf2 { get; set; }
+      public string WindowName { get; set; }
       public Key KeyUp { get; set; }
       public Key KeyDown { get; set; }
       public Key KeyLeft { get; set; }
