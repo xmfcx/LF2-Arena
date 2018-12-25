@@ -10,18 +10,22 @@ using Newtonsoft.Json;
 
 namespace lf2_arena
 {
-  class HostHandler
+  internal class HostHandler
   {
     public HostHandler()
     {
       var client = new TcpClient();
       client.Connect(IPAddress.Parse("127.0.0.1"), 30100);
       var streamHost = client.GetStream();
-      
-      MessageArena.Send(streamHost, "a");
 
+      MessageArena.Send(streamHost, "register\tmfc\tasdasd");
       var messageStr = MessageArena.ReceiveString(streamHost);
       Debug.WriteLine(messageStr);
+      if (messageStr != "success")
+      {
+        
+      }
+
 
       client.Close();
     }
