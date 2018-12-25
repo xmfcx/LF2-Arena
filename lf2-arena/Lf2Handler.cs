@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -88,31 +88,39 @@ namespace lf2_arena
     private void Lf2Talker(TcpClient client)
     {
       var streamLf2 = client.GetStream();
-
       streamLf2.Write(Encoding.ASCII.GetBytes("u can connect\0"), 0, 14);
       Thread.Sleep(500);
 
       var message = new byte[77];
       streamLf2.Read(message, 0, message.Length);
       PrintEnc(message);
-      //Print(message);
 
       for (int i = 0; i < 8; i++)
       {
-        message[i] = (byte) '1';
+        message[i] = (byte)'1';
       }
       streamLf2.Write(message, 0, message.Length);
 
-      Random random = new Random();
-      byte[] seed = new byte[3001];
-      random.NextBytes(seed);
-      streamLf2.Write(seed, 0, 3001);
+      var seed = GenerateRandomBytes(3001);
+      streamLf2.Write(seed, 0, seed.Length);
 
-      message = new byte[22];
+      var messageNtsd = new byte[16];
+      var ntsdStupidMessage = Encoding.ASCII.GetBytes("u can connect\0\0\0");
       while (true)
       {
-        streamLf2.Read(message, 0, message.Length);
-        Debug.WriteLine("read");
+        // First read exceptional 16 bytes that might belong to ntsd
+        streamLf2.Read(messageNtsd, 0, messageNtsd.Length);
+        if (messageNtsd.SequenceEqual(ntsdStupidMessage))
+        {
+          // And handle it if it belongs to ntsd
+          streamLf2.Write(messageNtsd, 0, messageNtsd.Length);
+          continue;
+        }
+        // Else, read the rest, combine and keep on.
+        var messageRest = new byte[6];
+        streamLf2.Read(messageRest, 0, messageRest.Length);
+        message = CombineArrays(messageNtsd, messageRest);
+
         int keySetSend = _keySetSentLast;
         lock (_lockKeyString)
         {
@@ -133,16 +141,29 @@ namespace lf2_arena
           }
         }
 
-        Debug.WriteLine("sending: " + keySetSend);
         message[0] = Convert.ToByte(keySetSend);
         streamLf2.Write(message, 0, 22);
         _keySetSentLast = keySetSend;
-        Debug.WriteLine("sennt");
       }
 
       client.Close();
     }
 
+    private static byte[] GenerateRandomBytes(int count)
+    {
+      var random = new Random();
+      byte[] seed = new byte[count];
+      random.NextBytes(seed);
+      return seed;
+    }
+
+    private static byte[] CombineArrays(byte[] array1, byte[] array2)
+    {
+      var arrayCombined = new byte[array1.Length + array2.Length];
+      Array.Copy(array1, arrayCombined, array1.Length);
+      Array.Copy(array2, 0, arrayCombined, array1.Length, array2.Length);
+      return arrayCombined;
+    }
 
     public static string ByteArrayToString(byte[] ba)
     {

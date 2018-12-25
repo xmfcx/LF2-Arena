@@ -72,6 +72,7 @@
     <Compile Include="HostHandler.cs" />
     <Compile Include="KeyboardHookHandler.cs" />
     <Compile Include="Lf2Handler.cs" />
+    <Compile Include="MessageArena.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="RoomListModel.cs" />
     <Compile Include="RoomListSelectableViewModel.cs" />

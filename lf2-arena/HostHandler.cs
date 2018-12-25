@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -14,10 +15,15 @@ namespace lf2_arena
     public HostHandler()
     {
       var client = new TcpClient();
-      //client.Connect(IPAddress.Parse("127.0.0.1"), 30100);
+      client.Connect(IPAddress.Parse("127.0.0.1"), 30100);
+      var streamHost = client.GetStream();
       
+      MessageArena.Send(streamHost, "a");
 
-      //client.Close();
+      var messageStr = MessageArena.ReceiveString(streamHost);
+      Debug.WriteLine(messageStr);
+
+      client.Close();
     }
   }
 }
